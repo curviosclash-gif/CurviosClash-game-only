@@ -16,7 +16,7 @@ npm --prefix electron start
 
 ## Enthalten
 
-- `dist/`: fertig gebauter Desktop-Renderer
+- `dist-app/`: fertig gebauter Desktop-Renderer
 - `data/maps/` und `data/vehicles/`: Laufzeitdaten fuer Spielinhalte
 - `electron/`: Desktop-Launcher und Electron-Konfiguration
 - `server/`: LAN-Signaling fuer Multiplayer

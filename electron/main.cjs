@@ -63,6 +63,9 @@ const RECORDING_VIDEO_EXPORT_CAPABILITY_ID = 'recording-video-export-save';
 const TUNING_CONSOLE_CAPABILITY_CONTRACT_VERSION = 'tuning-console-capability.v1';
 const TUNING_CONSOLE_CAPABILITY_ID = 'developer-tuning-console';
 const TUNING_CONSOLE_HOTKEY = 'F7';
+const DESKTOP_RENDERER_DIST_DIR_NAME = 'dist-app';
+const LEGACY_RENDERER_DIST_DIR_NAME = 'dist';
+const DESKTOP_STATIC_SERVER_DEFAULT_PORT = 38765;
 const MENU_DEFAULTS_OVERRIDE_FILE_NAME = 'menu-defaults.override.json';
 const SHARED_USER_DATA_DIR_NAME = 'curviosclash-app';
 const MAIN_SESSION_DATA_DIR_NAME = 'session-main';
@@ -419,8 +422,33 @@ async function stopSignalingServer() {
 
 async function startAppServer() {
     if (staticAppServer) return staticAppServer;
-    const distDir = path.join(__dirname, '..', 'dist');
-    staticAppServer = await startStaticServer({ rootDir: distDir });
+    const distDir = path.join(__dirname, '..', DESKTOP_RENDERER_DIST_DIR_NAME);
+    const distIndexPath = path.join(distDir, 'index.html');
+    if (!existsSync(distIndexPath)) {
+        const legacyDistDir = path.join(__dirname, '..', LEGACY_RENDERER_DIST_DIR_NAME);
+        const legacyDistIndexPath = path.join(legacyDistDir, 'index.html');
+        const legacyHint = existsSync(legacyDistIndexPath)
+            ? ` Legacy web build detected at "${legacyDistDir}" - rebuild desktop explicitly.`
+            : '';
+        throw new Error(
+            `Desktop renderer build missing at "${distIndexPath}". Run "npm run build:app" before starting Electron.${legacyHint}`
+        );
+    }
+    const preferredPortRaw = Number(process.env.CURVIOS_DESKTOP_STATIC_PORT);
+    const preferredPort = Number.isInteger(preferredPortRaw)
+        && preferredPortRaw > 0
+        && preferredPortRaw <= 65535
+        ? preferredPortRaw
+        : DESKTOP_STATIC_SERVER_DEFAULT_PORT;
+    try {
+        staticAppServer = await startStaticServer({ rootDir: distDir, port: preferredPort });
+    } catch (error) {
+        if (error?.code !== 'EADDRINUSE') {
+            throw error;
+        }
+        // Fallback keeps app start resilient if the preferred port is occupied.
+        staticAppServer = await startStaticServer({ rootDir: distDir, port: 0 });
+    }
     return staticAppServer;
 }
 
