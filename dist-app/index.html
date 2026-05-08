@@ -15,15 +15,15 @@
         }
     }
     </script>
-  <script type="module" crossorigin src="/assets/app-YnMjefor.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/training-DPR8AUmT.js">
-  <link rel="modulepreload" crossorigin href="/assets/developer-ui-B5vJOPA0.js">
-  <link rel="modulepreload" crossorigin href="/assets/EditorPathContract-BuEFM1Tw.js">
+  <script type="module" crossorigin src="/assets/app-CvD1YA8q.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/training-axN8-zCD.js">
+  <link rel="modulepreload" crossorigin href="/assets/developer-ui-DoyArU95.js">
+  <link rel="modulepreload" crossorigin href="/assets/EditorPathContract-BPzFUzaW.js">
   <link rel="modulepreload" crossorigin href="/assets/recorder-Bgw-t6q5.js">
-  <link rel="modulepreload" crossorigin href="/assets/three-core-D1HAydEl.js">
-  <link rel="modulepreload" crossorigin href="/assets/validation-C4mHjmiU.js">
+  <link rel="modulepreload" crossorigin href="/assets/three-core-ByPt_MdF.js">
+  <link rel="modulepreload" crossorigin href="/assets/validation-DbwtHJvQ.js">
   <link rel="modulepreload" crossorigin href="/assets/map-presets-DSBaKl-7.js">
-  <link rel="stylesheet" crossorigin href="/assets/app-HNU6Yxe_.css">
+  <link rel="stylesheet" crossorigin href="/assets/app-DdAV78jY.css">
 </head>
 
 <body>
@@ -215,6 +215,10 @@
                                             <option value="off">Aus</option>
                                             <option value="self_longest_ghost">Selbstduell (laengste Spur)</option>
                                         </select>
+                                        <label class="toggle-row secondary-btn-spaced" for="arcade-ghost-trail-collision-toggle">
+                                            <input type="checkbox" id="arcade-ghost-trail-collision-toggle">
+                                            <span>Ghost-Spur-Kollision</span>
+                                        </label>
                                         <small id="arcade-ghost-duel-mode-hint" class="menu-hint menu-copy-secondary">Nur im Einzelspieler aktiv.</small>
                                     </div>
                                     <div class="menu-section">
@@ -249,6 +253,15 @@
                                             <option value="EASY">Easy</option>
                                             <option value="NORMAL">Normal</option>
                                             <option value="HARD" selected>Hard</option>
+                                        </select>
+                                    </div>
+                                    <div class="menu-section">
+                                        <label for="bot-policy-strategy">Bot-Typ</label>
+                                        <select id="bot-policy-strategy">
+                                            <option value="auto" selected>Auto</option>
+                                            <option value="heuristic">Heuristik</option>
+                                            <option value="rule-based">Regelbasis</option>
+                                            <option value="bridge">Bridge</option>
                                         </select>
                                     </div>
                                     <div class="menu-section">
@@ -386,6 +399,8 @@
                             <input type="range" id="fire-rate-slider" min="0.1" max="2.0" step="0.05" value="1.25">
                             <label for="lockon-slider">Lock-On Radius: <span id="lockon-label">11</span>°</label>
                             <input type="range" id="lockon-slider" min="5" max="45" step="1" value="11">
+                            <label for="next-checkpoint-glow-slider">Naechster Checkpoint Leuchten: <span id="next-checkpoint-glow-label">1.35</span></label>
+                            <input type="range" id="next-checkpoint-glow-slider" min="0" max="3.0" step="0.05" value="1.35">
                             <label for="mg-trail-aim-slider">MG Trail-Zielsuchradius: <span id="mg-trail-aim-label">0.78</span></label>
                             <input type="range" id="mg-trail-aim-slider" min="0.2" max="6.0" step="0.05" value="0.78">
                             <div id="fight-player-hp-setting" class="fight-only-setting hidden">
