@@ -42,6 +42,12 @@ const LEGACY_CAPTURE_PROFILE_ALIASES = Object.freeze({
     cinematic_mp4: RECORDING_CAPTURE_PROFILE.CINEMATIC,
 });
 
+/**
+ * @typedef {'standard' | 'youtube_short' | 'cinematic'} RecordingCaptureProfile
+ * @typedef {'clean' | 'with_hud'} RecordingHudMode
+ * @typedef {Readonly<{ profile: RecordingCaptureProfile, hudMode: RecordingHudMode, exportPreset: string }>} RecordingCaptureSettings
+ */
+
 function normalizeString(value) {
     return typeof value === 'string' ? value.trim().toLowerCase() : '';
 }
@@ -57,6 +63,11 @@ export function normalizeEnumValue(value, validSet, defaultValue) {
     return validSet.has(defaultValue) ? defaultValue : validSet.values().next().value;
 }
 
+/**
+ * @param {unknown} value
+ * @param {RecordingCaptureProfile} [fallback]
+ * @returns {RecordingCaptureProfile}
+ */
 export function normalizeRecordingCaptureProfile(value, fallback = DEFAULT_RECORDING_CAPTURE_SETTINGS.profile) {
     const normalizedFallback = normalizeCaptureProfileCandidate(fallback);
     const fallbackValue = VALID_PROFILE_SET.has(normalizedFallback)
@@ -69,10 +80,20 @@ export function normalizeRecordingCaptureProfile(value, fallback = DEFAULT_RECOR
     return fallbackValue;
 }
 
+/**
+ * @param {unknown} value
+ * @param {RecordingHudMode} [fallback]
+ * @returns {RecordingHudMode}
+ */
 export function normalizeRecordingHudMode(value, fallback = DEFAULT_RECORDING_CAPTURE_SETTINGS.hudMode) {
     return normalizeEnumValue(value, VALID_HUD_MODE_SET, fallback);
 }
 
+/**
+ * @param {unknown} value
+ * @param {string} [fallback]
+ * @returns {string}
+ */
 export function normalizeRecordingExportPreset(value, fallback = DEFAULT_RECORDING_CAPTURE_SETTINGS.exportPreset) {
     return normalizeEnumValue(value, VALID_EXPORT_PRESET_SET, fallback);
 }
@@ -81,6 +102,7 @@ export function isCinematicCaptureProfile(value) {
     return normalizeCaptureProfileCandidate(value) === RECORDING_CAPTURE_PROFILE.CINEMATIC;
 }
 
+/** @returns {RecordingCaptureSettings} */
 export function createDefaultRecordingCaptureSettings() {
     return {
         profile: DEFAULT_RECORDING_CAPTURE_SETTINGS.profile,
@@ -89,8 +111,15 @@ export function createDefaultRecordingCaptureSettings() {
     };
 }
 
+/**
+ * @param {unknown} source
+ * @param {RecordingCaptureSettings} [fallback]
+ * @returns {RecordingCaptureSettings}
+ */
 export function normalizeRecordingCaptureSettings(source, fallback = DEFAULT_RECORDING_CAPTURE_SETTINGS) {
-    const src = source && typeof source === 'object' ? source : {};
+    const src = /** @type {Partial<RecordingCaptureSettings>} */ (
+        source && typeof source === 'object' ? source : {}
+    );
     const normalizedFallback = fallback && typeof fallback === 'object'
         ? fallback
         : DEFAULT_RECORDING_CAPTURE_SETTINGS;
