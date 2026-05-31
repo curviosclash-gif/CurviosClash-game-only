@@ -1,0 +1,1 @@
+import{o as e,r as t,w as o}from"./app-CO5Dne_y.js";const i=Object.freeze(Object.defineProperty({__proto__:null,mountGameInstanceForTests:e,resetAppInitializerForTests:t,waitForAppInitializerIdle:o},Symbol.toStringTag,{value:"Module"}));export{i as A};
